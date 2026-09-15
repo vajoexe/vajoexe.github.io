@@ -2,23 +2,105 @@ html,
 body {
     margin: 0;
     min-height: 100%;
+    font-family: "Prompt", sans-serif;
+}
+
+.container {
+    text-align: center;
+}
+
+.container h1 {
+    margin: 0 0 0px 0;
+}
+
+.container p {
+    margin: 0;
 }
 
 body {
     min-height: 100vh;
     position: relative;
     isolation: isolate;
+
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
 }
 
+/* blurred background */
 body::before {
     content: "";
     position: fixed;
     inset: -30px;
 
-    background: url("backrgound.webp") center / cover no-repeat;
 
-    filter: blur(20px);
+    background: url("background.webp") center / cover no-repeat;
+
+    filter: blur(2.5px);
     transform: scale(1.05);
 
+    z-index: -2;
+
+
+}
+
+/* subtle film/grain noise */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+
+    opacity: 0.14;
+    pointer-events: none;
+
     z-index: -1;
+
+
+}
+
+/* main glass panel */
+.container {
+    position: relative;
+
+
+    width: 90vw;
+    height: 90vh;
+
+    background: rgba(255, 255, 255, 0.35);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+
+}
+
+/* panel grain */
+.container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+
+    opacity: 0.20;
+    pointer-events: none;
+
+
+}
+
+/* keep content above panel grain */
+.container > * {
+    position: relative;
+    z-index: 1;
 }
