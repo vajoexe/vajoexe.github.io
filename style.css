@@ -118,6 +118,14 @@ body::after {
   font-weight: 600;
   line-height: 1.5; /* was 0.4 — this was the overlap bug */
 }
+
+.content::-webkit-scrollbar {
+  width: 6px;
+}
+.content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 3px;
+}
 /* social icons */
 .socials {
     position: absolute;
