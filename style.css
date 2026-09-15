@@ -113,6 +113,11 @@ body::after {
   padding-bottom: 90px; /* keeps last answer clear of the social icon bar */
 }
 
+.content h2 {
+    color: #bebebe;
+    font-weight: 900;
+}
+
 .content h4 {
   color: #efefef;
   font-weight: 600;
