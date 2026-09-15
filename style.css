@@ -66,22 +66,16 @@ body::after {
 
 /* main glass panel */
 .container {
-    position: relative;
-
-
-    width: 90vw;
-    height: 90vh;
-
-    background: rgba(255, 255, 255, 0.15);
-
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    border-radius: 20px;
-
-    overflow: hidden;
-
-
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* panel grain */
@@ -106,28 +100,24 @@ body::after {
 }
 /* center text thing */
 .content {
-    width: 90%;
-    margin: 30px auto 0 auto;
-
-    text-align: left;
-
-    font-size: 18px;
-    font-weight: 400;
-    color: #efefef;
-}
-
-.content h2 {
-    color: #bebebe;
-    font-weight: 900;
-    line-height: 1.4;
+  width: 90%;
+  margin: 30px auto 0 auto;
+  text-align: left;
+  font-size: 18px;
+  font-weight: 400;
+  color: #efefef;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 90px; /* keeps last answer clear of the social icon bar */
 }
 
 .content h4 {
-    color: #efefef;
-    font-weight: 600;
-    line-height: 1.4;
+  color: #efefef;
+  font-weight: 600;
+  line-height: 1.5; /* was 0.4 — this was the overlap bug */
 }
-
 /* social icons */
 .socials {
     position: absolute;
