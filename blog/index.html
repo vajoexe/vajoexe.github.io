@@ -27,24 +27,28 @@
         egging all over.
     </p>
 
-    <div class="blog-layout">
+    <div class="blog-layout" id="blog-layout">
 
         <div class="sidebar" id="sidebar"></div>
-
-        <div class="panel" id="panel">
-            <div class="empty-state">
-                <h1>Nuthin to see here.</h1>
-                <p>Click on a entry to start reading.</p>
-            </div>
-        </div>
-
+<div class="panel" id="panel">
+    <div class="empty-state">
+        <h1>Nuthin to see here.</h1>
+        <p>Click on a entry to start reading.</p>
     </div>
+</div>
+
+<button class="back-button" id="back-button" aria-label="Back to posts">
+    <img src="../arrow.svg" alt="">
+</button>
+
+</div>
 
     <div class="socials">
         <a href="https://www.youtube.com/@vajoexe" aria-label="YouTube"><img src="../youtube.svg" alt="YouTube"></a>
         <a href="https://www.instagram.com/vajoexe/" aria-label="Instagram"><img src="../instagram.svg" alt="Instagram"></a>
         <a href="https://kick.com/vajoexe" aria-label="Kick"><img src="../kick.svg" alt="Kick"></a>
         <a href="https://x.com/vajoexe" aria-label="X"><img src="../x.svg" alt="X"></a>
+        <a href="https://vajoexe.github.io/blog/" aria-label="Blog"><img src="../blog.svg" alt="Blog"></a>
     </div>
 
 </div>
@@ -53,6 +57,14 @@
 <script>
 const sidebar = document.getElementById('sidebar');
 const panel = document.getElementById('panel');
+const blogLayout = document.getElementById('blog-layout');
+const backButton = document.getElementById('back-button');
+
+if (window.innerWidth <= 450) {
+    backButton.addEventListener('click', () => {
+        blogLayout.classList.remove('post-open');
+    });
+}
 
 // make relative image paths in markdown resolve against posts/
 const renderer = new marked.Renderer();
@@ -73,6 +85,8 @@ posts.forEach(post => {
 });
 
 function loadPost(file, title, date) {
+    blogLayout.classList.add('post-open');
+
     fetch(file)
         .then(res => res.text())
         .then(md => {
