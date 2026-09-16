@@ -211,7 +211,7 @@ body::after {
 
 .panel img {
   display: block;
-  max-width: 50%;
+  max-width: 70%;
   height: auto;
   border-radius: 16px;
   margin: 10px 0;
@@ -250,4 +250,96 @@ body::after {
 .panel::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.25);
   border-radius: 3px;
+}
+
+@media (max-width: 450px) {
+  .sidebar {
+    width: 100%;
+  }
+
+  .panel {
+    display: none;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .panel img {
+    max-width: 100%;
+  }
+
+  .blog-layout {
+    position: relative;
+  }
+
+  .blog-layout.post-open .sidebar {
+    display: none;
+  }
+
+  .blog-layout.post-open .panel {
+    display: block;
+    width: 100%;
+    flex: 1;
+  }
+
+  .back-button {
+    display: none;
+
+    position: absolute;
+    top: -20px;
+    left: 0;
+
+    z-index: 10;
+
+    width: 20px;
+    height: 20px;
+
+    padding: 0;
+    margin: 0;
+
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    cursor: pointer;
+  }
+
+  .back-button img {
+    display: block;
+    width: 20px;
+    height: 20px;
+  }
+
+  .blog-layout.post-open .back-button {
+    display: block;
+  }
+}
+
+/* completely hide the mobile back button on desktop */
+@media (min-width: 451px) {
+  .back-button {
+    display: none !important;
+    pointer-events: none;
+  }
+}
+
+/* back button reset */
+.back-button {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+
+  background: transparent !important;
+  background-image: none !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  width: 20px !important;
+  height: 20px !important;
 }
