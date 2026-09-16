@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eggr. - blog</title>
+    <link rel="icon" href="../favicon.png" type="image/png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1 style="font-size: 64px; font-weight: 900; color: #b2b2b2;">
+        eggr.
+    </h1>
+
+    <p style="font-size: 20px; font-weight: 300; color: #efefef; font-style: italic;">
+        egging all over.
+    </p>
+
+    <div class="blog-layout">
+
+        <div class="sidebar" id="sidebar"></div>
+
+        <div class="panel" id="panel">
+            <div class="empty-state">
+                <h1>Nuthin to see here.</h1>
+                <p>Click on a entry to start reading.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="socials">
+        <a href="https://www.youtube.com/@vajoexe" aria-label="YouTube"><img src="../youtube.svg" alt="YouTube"></a>
+        <a href="https://www.instagram.com/vajoexe/" aria-label="Instagram"><img src="../instagram.svg" alt="Instagram"></a>
+        <a href="https://kick.com/vajoexe" aria-label="Kick"><img src="../kick.svg" alt="Kick"></a>
+        <a href="https://x.com/vajoexe" aria-label="X"><img src="../x.svg" alt="X"></a>
+    </div>
+
+</div>
+
+<script src="posts.js"></script>
+<script>
+const sidebar = document.getElementById('sidebar');
+const panel = document.getElementById('panel');
+
+// make relative image paths in markdown resolve against posts/
+const renderer = new marked.Renderer();
+
+renderer.image = ({ href, title, text }) => {
+    const resolved = /^(https?:)?\//.test(href) ? href : `posts/${href}`;
+    return `<img src="${resolved}" alt="${text}" title="${title || ''}">`;
+};
+
+marked.setOptions({ renderer });
+
+posts.forEach(post => {
+    const item = document.createElement('div');
+    item.className = 'post-item';
+    item.innerHTML = `<div class="post-title">${post.title}</div><div class="post-date">${post.date}</div>`;
+    item.addEventListener('click', () => loadPost(post.file, post.title, post.date));
+    sidebar.appendChild(item);
+});
+
+function loadPost(file, title, date) {
+    fetch(file)
+        .then(res => res.text())
+        .then(md => {
+            md = md.replace(/!\[\[([^\]]+)\]\]/g, (_, image) => {
+                return `![${image}](${encodeURIComponent(image)})`;
+            });
+
+            panel.innerHTML = `<h2>${title}</h2><p class="post-date">${date}</p>${marked.parse(md)}`;
+        })
+        .catch(err => {
+            panel.innerHTML = `<p>Couldn't load that post. ${err}</p>`;
+        });
+}
+</script>
+
+</body>
+</html>
