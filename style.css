@@ -5,6 +5,18 @@ body {
     font-family: "Prompt", sans-serif;
 }
 
+a {
+  color: #bebebe;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+.container a:hover {
+  opacity: 1;
+}
+
 .container {
     text-align: center;
 }
@@ -131,6 +143,11 @@ body::after {
   background: rgba(255, 255, 255, 0.25);
   border-radius: 3px;
 }
+
+.socials a:hover {
+  opacity: 1;
+}
+
 /* social icons */
 .socials {
   display: flex;
