@@ -9,6 +9,10 @@ a {
   color: #bebebe;
 }
 
+a:visited {
+  color: #bebebe;
+}
+
 a:hover {
   opacity: 0.7;
 }
