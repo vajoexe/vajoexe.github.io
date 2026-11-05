@@ -46,7 +46,9 @@ body {
 
 }
 
-/* blurred background */
+/* blurred background
+   html::before only holds the previous image while a blog post background fades in */
+html::before,
 body::before {
     content: "";
     position: fixed;
@@ -61,6 +63,10 @@ body::before {
     z-index: -2;
 
 
+}
+
+html::before {
+    background-image: none;
 }
 
 /* subtle film/grain noise */

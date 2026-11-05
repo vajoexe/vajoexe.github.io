@@ -47,7 +47,7 @@
 
     <div class="socials">
         <a href="https://www.youtube.com/@vajoexe" aria-label="YouTube"><img src="../icons/youtube.svg" alt="YouTube"></a>
-        <a href="https://www.instagram.com/vajoexe/" aria-label="Instagram"><img src="../icons/instagram.svg" alt="Instagram"></a>
+        <a href="https://www.instagram.com/vajojkexus/" aria-label="Instagram"><img src="../icons/instagram.svg" alt="Instagram"></a>
         <a href="https://kick.com/vajoexe" aria-label="Kick"><img src="../icons/kick.svg" alt="Kick"></a>
         <a href="https://x.com/vajoexe" aria-label="X"><img src="../icons/x.svg" alt="X"></a>
         <a href="/blog" aria-label="Blog"><img src="../icons/blog.svg" alt="Blog"></a>
@@ -65,6 +65,7 @@ const backButton = document.getElementById('back-button');
 if (window.innerWidth <= 450) {
     backButton.addEventListener('click', () => {
         blogLayout.classList.remove('post-open');
+        setBackground(); // back to the default background
     });
 }
 
@@ -82,9 +83,56 @@ posts.forEach(post => {
     const item = document.createElement('div');
     item.className = 'post-item';
     item.innerHTML = `<div class="post-title">${post.title}</div><div class="post-date">${post.date}</div>`;
-    item.addEventListener('click', () => loadPost(post.file, post.title, post.date));
+    item.addEventListener('click', () => {
+        loadPost(post.file, post.title, post.date);
+        setBackground(post.images && `posts/images/${post.images}/bg.webp`);
+    });
     sidebar.appendChild(item);
 });
+
+// per-post background: posts/images/<images>/bg.webp (any format the browser can decode),
+// falls back to the default one. fades when it loads, swaps instantly when it doesn't.
+// set through a real <style> rule (no css variables) so extensions like dark reader keep up.
+const DEFAULT_BG = 'url("/images/background.webp")';
+const bgStyle = document.head.appendChild(document.createElement('style'));
+let currentBg = DEFAULT_BG;
+let bgRequest = 0;
+let bgFade = null;
+
+function paintBackground(top, under) {
+    bgStyle.textContent = `body::before { background-image: ${top}; }` +
+        ` html::before { background-image: ${under || 'none'}; }`;
+}
+
+function setBackground(src) {
+    const request = ++bgRequest;
+
+    const apply = (bg, fade) => {
+        if (request !== bgRequest || bg === currentBg) return;
+        if (bgFade) bgFade.cancel();
+
+        paintBackground(bg, fade && currentBg); // old image stays underneath during the fade
+        currentBg = bg;
+        if (!fade) return;
+
+        try {
+            bgFade = document.body.animate(
+                { opacity: [0, 1] },
+                { duration: 600, easing: 'ease', pseudoElement: '::before' }
+            );
+            bgFade.onfinish = () => { if (request === bgRequest) paintBackground(bg); };
+        } catch {
+            paintBackground(bg); // no animation support: plain swap
+        }
+    };
+
+    if (!src) return apply(DEFAULT_BG, true);
+
+    const img = new Image();
+    img.onload = () => apply(`url("${img.src}")`, true);
+    img.onerror = () => apply(DEFAULT_BG, false);
+    img.src = src;
+}
 
 function loadPost(file, title, date) {
     blogLayout.classList.add('post-open');
